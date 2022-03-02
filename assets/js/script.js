@@ -137,6 +137,69 @@ $(".list-group").on("blur", "input[type='text']", function() {
   $(this).replaceWith(taskSpan);
 });
 
+
+$(".card .list-group").sortable({
+  connectWith: $(".card .list-group"),
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",
+  activate: function(event) {
+  },
+  deactivate: function(event) {
+  },
+  over: function(event) {
+  },
+  out: function(event) {
+  },
+  
+  
+  
+  update: function(event) {
+    var tempArr =[];
+
+    $(this).children().each(function() {
+      var text = $(this)
+      .find("p")
+      .text()
+      .trim();
+
+      var date =$(this)
+      .find("span")
+      .text()
+      .trim();
+      
+      tempArr.push({
+        text: text,
+        date: date,
+      });
+    });
+    var arrName = $(this)
+        .attr("id")
+        .replace("list-", "");
+
+      tasks[arrName] = tempArr;
+      saveTasks();
+  }
+});
+
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function(event, ui) {
+    console.log("drop");
+    ui.draggable.remove();
+  },
+  over: function(event, ui) {
+    console.log("over");
+  },
+  out: function(event, ui) {
+    console.log("out");
+  }
+});
+
+
+
+
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
   // clear values
